@@ -41,7 +41,7 @@ export default function Contact() {
 };
 
   return (
-    <section className="py-2 max-w-7xl mx-auto px-4" style={{ marginTop: "-3rem" }}>
+    <section className="py-2 max-w-7xl mx-auto px-4" style={{ marginTop: "3rem" }}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         
         {/* Left Side: The "Vibe" and Quick Links */}
