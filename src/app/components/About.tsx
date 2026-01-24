@@ -29,7 +29,7 @@ export default function About() {
             <img 
               src="/profilee.jpeg" // Put your photo in the public folder and rename it here
               alt="E" 
-              className="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-700 scale-105 hover:scale-100"
+              className="object-cover w-full h-full  hover:grayscale-0 transition-all duration-700 scale-105 hover:scale-100"
             />
             {/* The "CEO" Overlay Tag */}
             <div className="absolute bottom-6 left-6 p-4 backdrop-blur-md bg-black/40 border border-white/10 rounded-xl">
