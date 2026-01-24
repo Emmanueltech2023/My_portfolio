@@ -1,38 +1,43 @@
 "use client";
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 
-export default function Cursor() {
-  const [cursorSize, setCursorSize] = useState(16);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // This adds the "Mad" physics (stiffness and damping)
-  const springConfig = { damping: 25, stiffness: 200 };
-  const cursorX = useSpring(mouseX, springConfig);
-  const cursorY = useSpring(mouseY, springConfig);
+export default function CustomCursor() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const moveMouse = (e: MouseEvent) => {
-      mouseX.set(e.clientX - cursorSize / 2);
-      mouseY.set(e.clientY - cursorSize / 2);
+    // 1. Check if device is mobile based on screen width or touch capability
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || navigator.maxTouchPoints > 0);
     };
 
-    window.addEventListener("mousemove", moveMouse);
-    return () => window.removeEventListener("mousemove", moveMouse);
-  }, [cursorSize]);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    const mouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener("mousemove", mouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", mouseMove);
+      window.removeEventListener("resize", checkMobile);
+    };
+  }, []);
+
+  // 2. If it's mobile, return nothing (removes it from the DOM)
+  if (isMobile) return null;
 
   return (
     <motion.div
-      style={{
-        left: cursorX,
-        top: cursorY,
-      }}
-      className="fixed top-0 left-0 w-4 h-4 bg-neon rounded-full pointer-events-none z-[9999] mix-blend-difference"
+      className="fixed top-0 left-0 w-8 h-8 bg-white mix-blend-difference rounded-full pointer-events-none z-[9999]"
       animate={{
-        width: cursorSize,
-        height: cursorSize,
+        x: mousePosition.x - 16,
+        y: mousePosition.y - 16,
       }}
+      transition={{ type: "spring", damping: 20, stiffness: 250, mass: 0.5 }}
     />
   );
 }

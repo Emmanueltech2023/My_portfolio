@@ -16,7 +16,7 @@ export default function Home() {
       <Hero />
        <About /> 
       {/* <BentoGrid /> */}
-      {/* <Cursor /> */}
+      <Cursor />
       {/* <TerminalContact /> */}
       <SkillsCloud />
       <Services />

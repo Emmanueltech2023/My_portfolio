@@ -1,8 +1,46 @@
 "use client";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Magnetic from "./Magnetic"; // Ensure this import is here
+import Magnetic from "./Magnetic";
+
+const sentences = [
+  "Engineering the next generation of the web.",
+  "Building high-performance digital experiences.",
+  "Turning complex ideas into fast code.",
+  "One fast build at a time."
+];
 
 export default function Hero() {
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [loopNum, setLoopNum] = useState(0);
+  const [typingSpeed, setTypingSpeed] = useState(100);
+
+  useEffect(() => {
+    const handleType = () => {
+      const i = loopNum % sentences.length;
+      const fullText = sentences[i];
+
+      setDisplayText(
+        isDeleting
+          ? fullText.substring(0, displayText.length - 1)
+          : fullText.substring(0, displayText.length + 1)
+      );
+
+      setTypingSpeed(isDeleting ? 50 : 100);
+
+      if (!isDeleting && displayText === fullText) {
+        setTimeout(() => setIsDeleting(true), 2000); // Pause at the end
+      } else if (isDeleting && displayText === "") {
+        setIsDeleting(false);
+        setLoopNum(loopNum + 1);
+      }
+    };
+
+    const timer = setTimeout(handleType, typingSpeed);
+    return () => clearTimeout(timer);
+  }, [displayText, isDeleting, loopNum, typingSpeed]);
+
   return (
     <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* 1. The "Mad" Background */}
@@ -25,9 +63,17 @@ export default function Hero() {
           ELLU <br /> <span className="text-white">EMMANUEL</span>
         </h3>
 
-        <p className="text-gray-500 text-lg md:text-2xl max-w-xl mx-auto mb-10 font-light tracking-wide">
-          Crafting <span className="text-white font-medium">high-velocity</span> digital solutions for the next generation of the web.
-        </p>
+        {/* 2. Typewriter Subtitle Section */}
+        <div className="h-20 mb-10 flex items-center justify-center">
+          <p className="text-gray-400 text-lg md:text-2xl max-w-xl mx-auto font-mono tracking-tight">
+            {displayText}
+            <motion.span
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ duration: 0.8, repeat: Infinity }}
+              className="inline-block w-2 h-5 md:h-7 bg-violet-500 ml-1 align-middle"
+            />
+          </p>
+        </div>
 
         {/* 3. The Functional & Magnetic CTA */}
         <div className="flex gap-6 justify-center">
