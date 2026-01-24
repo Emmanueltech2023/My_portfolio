@@ -21,4 +21,4 @@ An immersive, high-performance portfolio built with **Next.js**, **Framer Motion
 
 1. **Clone the project:**
    ```bash
-   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+   git clone [https://github.com/Emmanueltech2023/My_portfolio.git](https://github.com/Emmanueltech2023/My_portfolio.git)
