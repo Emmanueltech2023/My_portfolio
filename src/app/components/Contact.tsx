@@ -140,8 +140,8 @@ export default function Contact() {
         <div className="flex gap-6">
           {[
             { icon: <Github />, url: "https://github.com/Emmanueltech2023" },
-            { icon: <Linkedin />, url: "https://linkedin.com/in/your-username" },
-            { icon: <Twitter />, url: "https://twitter.com/your-username" }
+            { icon: <Linkedin />, url: "https://www.linkedin.com/in/emmanuel-ellu/" },
+            { icon: <Twitter />, url: "https://x.com/CodeWithPammy" }
           ].map((social, i) => (
             <Magnetic key={i}>
               <a href={social.url} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors">

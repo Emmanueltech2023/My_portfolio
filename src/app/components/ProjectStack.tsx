@@ -1,7 +1,8 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, Lock, Sparkles, Layers, Cpu } from "lucide-react";
+import { projects, Project } from "@/data/projects";
 
 // --- Functional Magnetic Component ---
 const Magnetic = ({ children }: { children: React.ReactElement }) => {
@@ -34,136 +35,219 @@ const Magnetic = ({ children }: { children: React.ReactElement }) => {
   );
 };
 
-const projects = [
-  {
-    title: "TRAILER'S _VERSE",
-    desc: "A cinematic gateway leveraging the YouTube API to explore and stream high-definition movie previews.",
-    tags: ["React", "YouTube API", "CSS", "Framer Motion"],
-    color: "#0f172a",
-    video: "./trailers-verse.mp4", 
-    isVideo: true,
-    link: "https://movie-beige-zeta.vercel.app/",
-    github: "https://github.com/your-username/trailers-verse"
-  },
-  {
-    title: "GASTRO-OS V1",
-    desc: "A contactless digital menu solution optimized for high-speed performance and mobile-first restaurant experiences.",
-    tags: ["HTML", "CSS", "JavaScript"],
-    color: "#1e293b",
-    video: "./menu-v1.mp4",
-    isVideo: true,
-    link: "https://www.westgatesquare.com.ng/",
-    github: "#"
-  },
-  {
-    title: "GASTRO-OS PRO",
-    desc: "Advanced hospitality ecosystem featuring integrated administrative tools and dynamic menu management.",
-    tags: ["Next.js", "PostgreSQL", "Tailwind"],
-    color: "#020617",
-    video: "./menu-v2.mp4",
-    isVideo: true,
-    link: "https://westgate-hotel.vercel.app/",
-    github: "#"
-  },
-  {
-    title: "CORE-EXAM",
-    desc: "A mission-critical CBT engine engineered for high-concurrency standardized testing and real-time result analytics.",
-    tags: ["React", "Node.js", "MongoDB"],
-    color: "#1e293b",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
-    isVideo: false,
-    link: "#",
-    github: "#"
-  },
-  {
-    title: "PULSE CHAT",
-    desc: "Real-Time Chat Application with advanced messaging features.",
-    tags: ["React", "Socket.io", "Express"],
-    color: "#0f172a",
-    image: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=800&q=80",
-    isVideo: false,
-    link: "#",
-    github: "#"
-  },
-  {
-    title: "Real Estate Platform",
-    desc: "Modern property listing and management system.",
-    tags: ["Next.js", "TypeScript", "Tailwind"],
-    color: "#020617",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80",
-    isVideo: false,
-    link: "#",
-    github: "#"
-  }
-];
+// --- Futuristic Cyber Preview for Projects Without Media Yet ---
+function CyberMediaPreview({ project }: { project: Project }) {
+  const accent = project.accentColor || "#00f2ff";
 
-function ProjectCard({ project, i, progress, total }: { project: any, i: number, progress: MotionValue<number>, total: number }) {
-  const targetScale = 1 - ((total - i) * 0.05);
+  return (
+    <div className="relative w-full h-full flex flex-col justify-between p-6 md:p-8 bg-[#070b14] overflow-hidden select-none">
+      {/* Dynamic ambient background glow */}
+      <div 
+        className="absolute -top-20 -right-20 w-72 h-72 rounded-full blur-[100px] opacity-25 pointer-events-none"
+        style={{ backgroundColor: accent }}
+      />
+      <div 
+        className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full blur-[100px] opacity-15 pointer-events-none"
+        style={{ backgroundColor: accent }}
+      />
+
+      {/* Cyber Grid Lines */}
+      <div 
+        className="absolute inset-0 opacity-10 pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(${accent} 1px, transparent 1px), linear-gradient(90deg, ${accent} 1px, transparent 1px)`,
+          backgroundSize: "32px 32px"
+        }}
+      />
+
+      {/* Top Telemetry Header */}
+      <div className="relative z-10 flex items-center justify-between border-b border-white/10 pb-3">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full animate-ping" style={{ backgroundColor: accent }} />
+          <span className="text-[10px] font-mono tracking-widest uppercase text-white/70">
+            {project.status || "PRODUCTION READY"}
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5 font-mono text-[9px] text-white/30">
+          <Cpu size={12} style={{ color: accent }} />
+          <span>SYS.ARCH // v2.6</span>
+        </div>
+      </div>
+
+      {/* Center Holographic Presentation */}
+      <div className="relative z-10 my-auto py-6">
+        <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-3">
+          <Sparkles size={11} style={{ color: accent }} />
+          <span className="text-[10px] font-mono uppercase tracking-wider text-white/70">
+            {project.title}
+          </span>
+        </div>
+        <p className="text-white/90 text-sm md:text-base font-mono font-medium leading-relaxed">
+          {project.tagline}
+        </p>
+        
+        {/* Architecture Pill Matrix */}
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {project.tags.slice(0, 4).map((tech) => (
+            <span 
+              key={tech} 
+              className="text-[9px] font-mono px-2 py-0.5 rounded bg-white/[0.04] border border-white/10 text-white/60"
+            >
+              #{tech}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom Confidentiality / Status Footnote */}
+      <div className="relative z-10 flex items-center justify-between pt-3 border-t border-white/5 text-[10px] font-mono text-white/40">
+        <span className="flex items-center gap-1">
+          <Layers size={11} /> {project.tags[0]} ARCHITECTURE
+        </span>
+        <span className="text-[9px] tracking-wider text-white/30 uppercase">
+          PAMMY'S DEV CERTIFIED
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function ProjectVideo({ src }: { src: string }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="w-full h-full bg-black/40" />;
+  }
+
+  return (
+    <div className="w-full h-full flex items-center justify-center p-2 md:p-6 bg-black/40 overflow-hidden">
+      <video 
+        src={src}
+        autoPlay 
+        loop 
+        muted 
+        playsInline 
+        preload="metadata"
+        suppressHydrationWarning
+        className="max-h-full max-w-full object-contain rounded-xl shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]"
+      />
+    </div>
+  );
+}
+
+function ProjectCard({ 
+  project, 
+  i, 
+  progress, 
+  total 
+}: { 
+  project: Project; 
+  i: number; 
+  progress: MotionValue<number>; 
+  total: number 
+}) {
+  const targetScale = 1 - ((total - i) * 0.035);
   const scale = useTransform(progress, [i * (1 / total), 1], [1, targetScale]);
 
   return (
-    // On mobile, we reduce the height from h-screen to something more flexible
-    <div className="min-h-[70vh] md:h-screen sticky top-0 flex items-center justify-center py-10 md:py-0">
+    <div className="min-h-[75vh] md:h-screen sticky top-0 flex items-center justify-center py-6 md:py-0">
       <motion.div
         style={{ 
           backgroundColor: project.color,
           scale,
-          // We reduce the stack offset on mobile so cards don't disappear off the top
-          top: `calc(-2vh + ${i * 20}px)` 
+          top: `calc(4vh + ${i * 22}px)` 
         }}
-        className="relative h-auto min-h-[500px] md:h-[500px] w-full rounded-3xl border border-white/10 overflow-hidden flex flex-col md:flex-row group shadow-2xl"
+        className="relative h-auto min-h-[520px] md:h-[520px] w-full rounded-3xl border border-white/10 overflow-hidden flex flex-col md:flex-row group shadow-2xl transition-shadow duration-500 hover:shadow-neon/5"
       >
-        {/* Media Side (Moves to Top on Mobile) */}
-        <div className="h-[250px] md:h-full md:w-1/2 relative bg-black/40 overflow-hidden order-1 md:order-2">
-          {project.isVideo ? (
-            <video 
-              src={project.video}
-              autoPlay loop muted playsInline 
-              className="object-cover w-full h-full opacity-60 md:opacity-50 grayscale md:group-hover:grayscale-0 md:group-hover:opacity-100 transition-all duration-700"
-            />
+        {/* Media Side (Top on Mobile, Right on Desktop) */}
+        <div className="h-[280px] md:h-full md:w-1/2 relative bg-black/50 overflow-hidden order-1 md:order-2 border-b md:border-b-0 md:border-l border-white/5 flex items-center justify-center">
+          {project.mediaType === "video" && project.mediaSrc ? (
+            <ProjectVideo src={project.mediaSrc} />
+          ) : project.mediaType === "image" && project.mediaSrc ? (
+            <div className="w-full h-full flex items-center justify-center p-3 md:p-6">
+              <img 
+                src={project.mediaSrc} 
+                alt={project.title} 
+                className="max-h-full max-w-full object-contain rounded-xl shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]" 
+              />
+            </div>
           ) : (
-            <img 
-              src={project.image} 
-              alt={project.title} 
-              className="object-cover w-full h-full opacity-60 md:opacity-50 grayscale md:group-hover:grayscale-0 md:group-hover:opacity-100 transition-all duration-700" 
-            />
+            <CyberMediaPreview project={project} />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-black/40 to-transparent" />
         </div>
 
-        {/* Content Side (Moves to Bottom on Mobile) */}
+        {/* Content Side (Bottom on Mobile, Left on Desktop) */}
         <div className="p-6 md:p-10 md:w-1/2 flex flex-col justify-between z-10 order-2 md:order-1">
           <div>
-            <div className="flex flex-wrap gap-2 mb-4">
+            {/* Tech Tags */}
+            <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4">
               {project.tags.map((tag: string) => (
-                <span key={tag} className="text-[9px] md:text-[10px] font-mono border border-white/20 px-2 py-1 rounded-full text-white/50">{tag}</span>
+                <span 
+                  key={tag} 
+                  className="text-[9px] md:text-[10px] font-mono border border-white/15 px-2.5 py-1 rounded-full text-white/60 bg-white/[0.02]"
+                >
+                  {tag}
+                </span>
               ))}
             </div>
-            <h3 className="text-2xl md:text-5xl font-bold mb-3 uppercase italic tracking-tighter">{project.title}</h3>
-            <p className="text-gray-400 text-sm md:text-lg leading-relaxed font-light line-clamp-3 md:line-clamp-none">
+
+            {/* Title & Tagline */}
+            <h3 className="text-2xl md:text-4xl lg:text-5xl font-black mb-2 uppercase italic tracking-tight text-white group-hover:text-neon transition-colors">
+              {project.title}
+            </h3>
+            <p className="text-xs md:text-sm font-mono text-cyan-400/80 mb-3 tracking-wide">
+              {project.tagline}
+            </p>
+            <p className="text-gray-300/80 text-xs md:text-sm leading-relaxed font-light line-clamp-4 md:line-clamp-none">
               {project.desc}
             </p>
           </div>
           
-          <div className="flex gap-3 mt-6 md:mt-0">
-            <Magnetic>
-              <a 
-                href={project.link} 
-                target="_blank" 
-                className="flex items-center gap-2 bg-white text-black px-5 py-3 md:px-6 md:py-3 rounded-full font-bold text-xs md:text-sm"
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3 mt-6 pt-4 border-t border-white/5">
+            {project.link ? (
+              <Magnetic>
+                <a 
+                  href={project.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-white text-black hover:bg-neon transition-colors px-5 py-3 md:px-6 md:py-3 rounded-full font-bold text-xs md:text-sm shadow-md"
+                >
+                  VIEW LIVE <ExternalLink size={14} />
+                </a>
+              </Magnetic>
+            ) : (
+              <div className="flex items-center gap-2 bg-white/5 border border-white/10 text-white/50 px-4 py-2.5 rounded-full font-mono text-[11px] select-none">
+                <span className="w-1.5 h-1.5 rounded-full bg-neon/80 animate-pulse" />
+                {project.status || "ENTERPRISE BUILD"}
+              </div>
+            )}
+
+            {project.github ? (
+              <Magnetic>
+                <a 
+                  href={project.github} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="GitHub Repository"
+                  className="p-3 border border-white/10 hover:border-white/30 rounded-full text-white bg-white/5 hover:bg-white/10 transition-colors"
+                >
+                  <Github size={18} />
+                </a>
+              </Magnetic>
+            ) : project.isPrivateRepo ? (
+              <div 
+                title="Private Repository / Client NDA"
+                className="flex items-center gap-1.5 px-3 py-2.5 border border-white/5 rounded-full text-white/30 font-mono text-[10px] select-none"
               >
-               VIEW LIVE <ExternalLink size={14} />
-              </a>
-            </Magnetic>
-            <Magnetic>
-              <a 
-                href={project.github} 
-                target="_blank" 
-                className="p-3 border border-white/10 rounded-full text-white"
-              >
-                <Github size={18} />
-              </a>
-            </Magnetic>
+                <Lock size={13} />
+                <span>PRIVATE REPO</span>
+              </div>
+            ) : null}
           </div>
         </div>
       </motion.div>
@@ -172,19 +256,32 @@ function ProjectCard({ project, i, progress, total }: { project: any, i: number,
 }
 
 export default function ProjectStack() {
-  const container = useRef(null);
+  const container = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: container,
-    offset: ['start start', 'end end']
+    offset: ["start start", "end end"]
   });
 
   return (
-    // ADD THE ID HERE
-    <section id="projects" ref={container} className="relative py-20 px-4">
-      <h2 className="text-6xl md:text-8xl font-black text-center mb-10 md:mb-20 opacity-10 uppercase">WORK</h2>
+    <section id="projects" ref={container} className="relative py-24 px-4 max-w-6xl mx-auto">
+      <div className="text-center mb-12 md:mb-20">
+        <span className="text-xs font-mono uppercase tracking-[0.3em] text-neon block mb-2">
+          Featured Engineering Works
+        </span>
+        <h2 className="text-5xl md:text-8xl font-black opacity-15 uppercase tracking-tighter">
+          PROJECTS
+        </h2>
+      </div>
+
       <div className="max-w-5xl mx-auto">
         {projects.map((project, i) => (
-          <ProjectCard key={i} project={project} i={i} progress={scrollYProgress} total={projects.length} />
+          <ProjectCard 
+            key={project.id} 
+            project={project} 
+            i={i} 
+            progress={scrollYProgress} 
+            total={projects.length} 
+          />
         ))}
       </div>
     </section>

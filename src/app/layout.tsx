@@ -1,10 +1,9 @@
-"use client"; // We need this for the Scroll Effect (Lenis)
-import { useEffect } from "react";
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Lenis from "lenis";
 import "./globals.css";
+import SmoothScroll from "./components/SmoothScroll";
 import Cursor from "./components/Cursor";
-import Preloader from "./components/Preloader"; // <--- ADD THIS IMPORT!
+import Preloader from "./components/Preloader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,46 +15,60 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const metadata: Metadata = {
+  title: "PAMMY'S DEV | Ellu Emmanuel — Full-Stack Engineer",
+  description:
+    "Portfolio of Ellu Emmanuel (PAMMY'S DEV) — a full-stack software engineer specializing in high-performance web applications, scalable architectures, and cinematic digital experiences. Built with Next.js, React, TypeScript, and Tailwind CSS.",
+  keywords: [
+    "Full Stack Developer",
+    "Software Engineer",
+    "Next.js Developer",
+    "React Developer",
+    "TypeScript",
+    "Tailwind CSS",
+    "Ellu Emmanuel",
+    "PAMMY'S DEV",
+    "Web Developer Nigeria",
+    "Portfolio",
+  ],
+  authors: [{ name: "Ellu Emmanuel", url: "https://github.com/Emmanueltech2023" }],
+  creator: "Ellu Emmanuel",
+  openGraph: {
+    type: "website",
+    title: "PAMMY'S DEV | Ellu Emmanuel — Full-Stack Engineer",
+    description:
+      "Full-stack software engineer building high-performance digital experiences. Explore projects like Leapforce Media, The Magic Store, Ivest, ELSINAL, and more.",
+    siteName: "PAMMY'S DEV Portfolio",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PAMMY'S DEV | Ellu Emmanuel — Full-Stack Engineer",
+    description:
+      "Full-stack software engineer building high-performance digital experiences.",
+    creator: "@CodeWithPammy",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-      touchMultiplier: 2,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
   return (
     <html lang="en" className="dark">
-      <head>
-        <title>PAMMY'S DEV | Full Stack Engineer</title>
-        <meta name="description" content="Portfolio of a Full Stack Engineer specializing in high-end digital experiences." />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-obsidian text-white selection:bg-neon selection:text-black`}
       >
-        {/* Wrap inside a fragment to keep React happy */}
-        <>
+        <SmoothScroll>
           <Preloader />
           {children}
           <Cursor />
-        </>
+        </SmoothScroll>
       </body>
     </html>
   );
